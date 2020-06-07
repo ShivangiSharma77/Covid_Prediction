@@ -24,17 +24,12 @@ def get_model():
     global model
     model = load_model('covid.h5')
     print(" * model loaded!")
-# test_image = image.load_img('C://Users//ajink//Documents//covid//X-ray-TeamProject//images//test//covid//7.jpeg', 
-#                target_size=(64,64))
 
 # ### Image preprocessing
 def  process(test_image):
     if test_image.mode != "RGB":
         test_image = test_image.convert("RGB")
     test_image= test_image.resize((64,64))
-    
-    # type(test_image)
-    # test_image = test_image.convert("RGB")
     test_image=image.img_to_array(test_image)
     # test_image= test_image.reshape(64,64,3)
     test_image = test_image[:, :, :3]
@@ -58,15 +53,9 @@ def predict():
     encoded = message['image']
     decoded = base64.b64decode(encoded)
     test_image = Image.open(io.BytesIO(decoded))
-    # if test_image.mode != "RGB":
-    #      test_image = image.convert("RGB")
     processed_image = process(test_image)
-    # prediction = model.predict(processed_image)
     prediction = classifier(model.predict(processed_image))
-    # if prediction == 1:
-    #     prediction='1'
-    # else:
-    #     prediction='0'
+  
     response = {
         'prediction': {
             'Covid_prediction': prediction
@@ -78,6 +67,3 @@ def predict():
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=False)
-# ### Predict
-# test_image=process(test_image)
-# result = classifier(model.predict(test_image))
